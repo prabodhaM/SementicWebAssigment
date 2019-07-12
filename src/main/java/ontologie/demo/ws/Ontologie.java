@@ -664,7 +664,7 @@ public class Ontologie {
             }
             Query query = QueryFactory.create(queryString);
             QueryExecution qe = QueryExecutionFactory.create(query, model);
-            ResultSet resultSet = qe.execSelect();
+            ResultSet resultSet = qe.execSelect() ;
             int x=0;
             while (resultSet.hasNext()) {
                 x++;
