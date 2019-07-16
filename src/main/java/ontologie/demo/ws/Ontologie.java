@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 public class Ontologie {
 
-//    @RequestMapping(value = "/ontologies",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
+    //    @RequestMapping(value = "/ontologies",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
 //    public   List<JSONObject> getontologies() {
 //        List<JSONObject> list=new ArrayList();
 //        String fileName = "cake.owl";
@@ -326,7 +326,7 @@ public class Ontologie {
             Query query = QueryFactory.create(sprql);
             QueryExecution qe = QueryExecutionFactory.create(query, model);
             ResultSet resultSet = qe.execSelect();
-           int x=0;
+            int x=0;
             while (resultSet.hasNext()) {
                 x++;
                 JSONObject obj = new JSONObject();
@@ -482,7 +482,7 @@ public class Ontologie {
 
 
     @CrossOrigin
-    @RequestMapping(value = "/getAllOtherIngredients",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/getAllAdditonalIngredients",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
     public List<JSONObject> query4() {
         List<JSONObject> list=new ArrayList();
         String fileName = "cake.owl";
@@ -491,7 +491,7 @@ public class Ontologie {
             FileReader reader = new FileReader(file);
             OntModel model = ModelFactory
                     .createOntologyModel(OntModelSpec.OWL_DL_MEM);
-            model.read(reader,null);
+            model.read(reader,null );
 
             String sprql = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
                     "PREFIX owl: <http://www.w3.org/2002/07/owl#>" +
@@ -634,37 +634,38 @@ public class Ontologie {
                     "SELECT ?subject ?price " +
                     "WHERE { ";
 
-            if (!(selectedBase == null || selectedBase.isEmpty())) {
+            if (!(selectedBase.equals("All Bases"))) {
                 queryString += "?subject cake:hasCakeBase cake:" + selectedBase + ". ";
 
             }
 
-            if (!(selectedFrosting == null || selectedFrosting.isEmpty())) {
+            if (!(selectedFrosting.equals("All Frosting"))) {
                 queryString += "?subject cake:hasFrosting cake:" + selectedFrosting + ". ";
             }
-            if (!(selectedTopping == null || selectedTopping.isEmpty())) {
+            if (!(selectedTopping.equals("All Toppings"))) {
                 queryString += "?subject cake:hasTopping cake:" + selectedTopping + ". ";
             }
 
-            if (!(selectedFruitAdding == null || selectedFruitAdding.isEmpty())) {
+            if (!(selectedFruitAdding.equals("All FruitAdding"))) {
                 queryString += "?subject cake:hasFruit cake:" + selectedFruitAdding + ". ";
             }
 
-            if (!(selectedOtherIngredient == null || selectedOtherIngredient.isEmpty())) {
+            if (!(selectedOtherIngredient.equals("All OtherIngredient"))) {
                 queryString += "?subject cake:hasIngredient cake:" + selectedOtherIngredient + ". ";
             }
 
-            if (!(selectedOccasion == null || selectedOccasion.isEmpty())) {
+            if (!(selectedOccasion.equals("All Occasion"))) {
                 queryString += "?subject cake:hasOccasion cake:" + selectedOccasion + ". ";
             }
-            if (!(selectedShape == null || selectedShape.isEmpty())) {
-                queryString += "?subject cake:hasShape cake:" + selectedShape + ". ";
+            if (!(selectedShape.equals("All Shapes"))) {
+                queryString += "?subject cake:hasShape cake:" + selectedShape + ".}";
             } else {
                 queryString += "?subject cake:hasPriceValue ?price.}";
             }
+            String c1 = queryString;
             Query query = QueryFactory.create(queryString);
             QueryExecution qe = QueryExecutionFactory.create(query, model);
-            ResultSet resultSet = qe.execSelect() ;
+            ResultSet resultSet = qe.execSelect();
             int x=0;
             while (resultSet.hasNext()) {
                 x++;
@@ -685,6 +686,42 @@ public class Ontologie {
         }
         return null;
     }
+//    @CrossOrigin
+//    @RequestMapping(value = "/GetTypedQueryResults",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
+//    public List<JSONObject> query8(String sprql) {
+//        List<JSONObject> list=new ArrayList();
+//        String fileName = "cake.owl";
+//        try {
+//            File file = new File(fileName);
+//            FileReader reader = new FileReader(file);
+//            OntModel model = ModelFactory
+//                    .createOntologyModel(OntModelSpec.OWL_DL_MEM);
+//            model.read(reader,null);
+//
+//
+//            Query query = QueryFactory.create(sprql);
+//            QueryExecution qe = QueryExecutionFactory.create(query, model);
+//            ResultSet resultSet = qe.execSelect();
+//            int x=0;
+//            while (resultSet.hasNext()) {
+//                x++;
+//                JSONObject obj = new JSONObject();
+//                QuerySolution solution = resultSet.nextSolution();
+//                System.out.println(solution.get("shape").toString());
+//                obj.put("subject",solution.get("shape1").toString().substring(40));
+////                obj.put("property",solution.get("y").toString());
+////                obj.put("object",solution.get("z").toString());
+//                list.add(obj);
+//            }
+//            System.out.println(x);
+//            return list;
+//
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 
 
 }
